@@ -1,0 +1,29 @@
+1、一定要注意：在单元测试时，使用@Test一定要来自于import org.junit.jupiter.api.Test;
+                            而不是import org.junit.Test;
+                            一个是JUnit5，一个是JUnit4
+
+2、Synchronized锁失效的几种情况：
+    1.多例模式
+    Synchronized关键字注释在非静态方法上时，锁对象是当前对象，如果此时非单例调用，会导致锁失效！
+
+    解决方法：
+    1.使用单例模式，或锁定唯一对象。
+
+
+    2.事务管理
+    Spring的@Transcation事务管理使用AOP方式实现，如果方法上有事务管理，则会导致锁放开后后一个方法已经执行，但此时上一个方法的事物还未提交，从而导致下一次执行时拿到的数据非最新数据，导致数据错乱。
+
+    解决方法：
+    1.锁加在事务管理方法外
+    2.使用数据库锁
+
+    3.集群部署
+    Synchronized关键字只能进程内锁定，集群部署无法生效。
+
+    解决方法：
+    1.使用Redis等实现分布式锁。
+    ————————————————
+    版权声明：本文为CSDN博主「我就是我500」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+    原文链接：https://blog.csdn.net/qq_42628989/article/details/127550934
+
+    在一人一单的初步实现中，如果seckillVoucher方法有@Transactional标注，那么里面的synchronized锁就会失效。
